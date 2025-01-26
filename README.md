@@ -1,1 +1,5 @@
 # r_d_QAT_TS_course_IK
+
+All added Merge/Pull requests are for ongoing QAT r_d course related to Typescript.
+
+Merge/Pull requests will be reviewed by Viacheslav @vlevkoniuk or Natalia @nzamishchak
