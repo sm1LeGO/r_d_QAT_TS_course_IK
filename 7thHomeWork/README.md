@@ -1,24 +1,14 @@
 # ts-eslint-config
-recommended config from me for programming on a TypeScript
+To initiate package json and build TS file used command "npm i"
 
-In order to use this config you have to install the following NPM packages
-```
-npm i -D typescript ts-node eslint typescript-eslint @eslint/js @typescript-eslint/eslint-plugin @typescript-eslint/parser @stylistic/eslint-plugin @stylistic/eslint-plugin-ts eslint-plugin-prettier eslint-plugin-unicorn prettier globals
-```
+# 7th HomeWork related to TypeScript basics and Types
+7th HomeWork folder contains:
 
-Then put eslint.config.mjs into your base directory
+- Under SRC folder created 2 TS files
+       - functions.ts & arrow-functions.ts
+       - updated ReadMe file
 
-you can add a script to your package.json
-```
-"scripts": {
-  "lint": "eslint .",
-  "build": "npm run lint && tsc --build",
-}
-```
+- For arrow-functions.ts used code from lesson 5 provided by Viacheslav (interested in playing with different code)
+- For functions.ts used code from my 5thHomeWork/src/functions.js file.
 
-**Alternatively**, just copy the content of this folder into your project folder and run
-```
-npm i
-```
-
-and start coding
+MR will be added after comments from @vlevkoniuk will be reviewed and approved. 
