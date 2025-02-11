@@ -1,25 +1,10 @@
 # js-eslint-config
-recommended config from me for programming on a JavaScript
+To initiate package.json and build JS file used command "npm i"
+To initialize EsLint use command >>> "npm i -D @eslint/js eslint globals eslint-plugin-unicorn"
 
-In order to use this config you have to install the following NPM packages
-```
-npm init
-npm i -D @eslint/js eslint globals eslint-plugin-unicorn
-```
-
-Then put eslint.config.mjs and .prettierrc into your base directory
-
-you can add a script to your package.json
-```
-"scripts": {
-  "lint": "eslint .",
-  "build": "npm run lint && <build script>",
-}
-```
-
-**Alternatively**, just copy the content of this folder into your project folder and run
-```
-npm i
-```
-
-and start coding
+# 6th Homework related to Async functions, error logging and debug
+For current MR:
+    - created set up JS project in folder 6thHomeWork
+    - created 3 files [async-await.js, promises.js, try-catch.js]
+ - Fixed Linter errors during coding
+ - Additional commit added to resolve all open thread after initial review

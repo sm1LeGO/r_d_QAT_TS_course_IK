@@ -7,6 +7,7 @@ async function fetchData(url) {
         return await response.json();
     } catch (error) {
         console.error("Error fetching data from server:", error);
+        return null;
     }
 }
 
