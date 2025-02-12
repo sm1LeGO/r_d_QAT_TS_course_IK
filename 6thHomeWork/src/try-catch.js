@@ -24,4 +24,7 @@ async function fetchData(url) {
     }
 }
 
-fetchData("https://failed-service.com");
+(async () => {
+    await fetchData("https://failed-service.com");
+})();
+
