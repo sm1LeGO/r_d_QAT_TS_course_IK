@@ -14,7 +14,10 @@ During 8th homework done:
       - request-json.ts
       - abstraction.ts
       - index.ts
-- Fixed esLint issues with code      
+- Fixed esLint issues with code 
+
+- Part related to rework:
+Removed code from index.ts related to cars ( plan to use it in 9th Homework), rework exports/imports and use in in index.ts file
 
 All tasks done according to homework located on https://lms.robotdreams.cc/course/2479/lesson/45539/homework/24951
 

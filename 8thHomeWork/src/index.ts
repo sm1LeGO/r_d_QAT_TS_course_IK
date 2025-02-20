@@ -1,28 +1,28 @@
-class Car {
-    public make: string;
-    public model: string;
-    public year: number;
-    public constructor(make: string, model: string, year: number) {
-        this.make = make;
-        this.model = model;
-        this.year = year;
+import { User, UserSummary } from './request-json';
+import { Coach, Team, Forward, Defenseman, Goalie } from './abstraction';
+
+async function fetchUser(userId: number): Promise<User> {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+    if (!response.ok) {
+        throw new Error(`ERROR during fetching user: ${response.status}`);
     }
-    public displayInfo(): void {
-        console.log(`Car Info: ${this.year} ${this.make} ${this.model}`);
-    }
-    public updateModel(newModel: string): void {
-        this.model = newModel;
-        console.log(`The car model has been updated to: ${this.model}`);
-    }
-    public updateYear(newYear: number): void {
-        this.year = newYear;
-        console.log(`The car year has been updated to: ${this.year}`);
-    }
+    return response.json() as Promise<User>;
 }
 
-const myCar = new Car('Volvo', 'S60', 2015);
+fetchUser(8)
+    .then(user => {
+        const summary = new UserSummary(user);
+        console.log(summary);
+    })
+    .catch(error => console.error(error));
 
-myCar.displayInfo();
-myCar.updateModel('XC60');
-myCar.updateYear(2020);
-myCar.displayInfo();
+// Code part for abstraction.ts file display
+const coach = new Coach('Use one timer shot if our net is empty');
+const team = new Team(coach);
+
+team.addPlayer(new Forward('Barkov', 16));
+team.addPlayer(new Defenseman('Larsson', 8));
+team.addPlayer(new Goalie('Bobrovskiy', 72));
+
+team.showStrategy();
+team.playGame();

@@ -1,9 +1,9 @@
-interface Geo {
+export interface Geo {
     lat: string;
     lng: string;
 }
 
-interface Address {
+export interface Address {
     street: string;
     suite: string;
     city: string;
@@ -11,13 +11,13 @@ interface Address {
     geo: Geo;
 }
 
-interface Company {
+export interface Company {
     name: string;
     catchPhrase: string;
     bs: string;
 }
 
-interface User {
+export interface User {
     id: number;
     name: string;
     username: string;
@@ -27,7 +27,8 @@ interface User {
     website: string;
     company: Company;
 }
-class UserSummary {
+
+export class UserSummary {
     public id: number;
     public name: string;
     public city: string;
@@ -42,17 +43,3 @@ class UserSummary {
         this.contactInfo = `Email: ${user.email}, Phone: ${user.phone}`;
     }
 }
-async function fetchUser(userId: number): Promise<User> {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-    if (!response.ok) {
-        throw new Error(`ERROR during fetching user: ${response.status}`);
-    }
-    return response.json() as Promise<User>;
-}
-
-fetchUser(8)
-    .then(user => {
-        const summary = new UserSummary(user);
-        console.log(summary);
-    })
-    .catch(error => console.error(error));

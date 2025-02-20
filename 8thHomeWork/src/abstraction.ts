@@ -1,4 +1,4 @@
-abstract class HockeyPlayer {
+export abstract class HockeyPlayer {
     protected name: string;
     protected number: number;
 
@@ -9,7 +9,7 @@ abstract class HockeyPlayer {
     public abstract play(): void;
 }
 
-class Forward extends HockeyPlayer {
+export class Forward extends HockeyPlayer {
     public constructor(name: string, number: number) {
         super(name, number);
     }
@@ -18,7 +18,7 @@ class Forward extends HockeyPlayer {
     }
 }
 
-class Defenseman extends HockeyPlayer {
+export class Defenseman extends HockeyPlayer {
     public constructor(name: string, number: number) {
         super(name, number);
     }
@@ -26,7 +26,8 @@ class Defenseman extends HockeyPlayer {
         console.log(`${this.name} (Defenseman) Shot the pack from the blue line`);
     }
 }
-class Goalie extends HockeyPlayer {
+
+export class Goalie extends HockeyPlayer {
     public constructor(name: string, number: number) {
         super(name, number);
     }
@@ -34,7 +35,8 @@ class Goalie extends HockeyPlayer {
         console.log(`${this.name} (Goalie) leave the net if we lose, during last minute!`);
     }
 }
-class Coach {
+
+export class Coach {
     private strategy: string;
 
     public constructor(strategy: string) {
@@ -45,7 +47,7 @@ class Coach {
     }
 }
 
-class Team {
+export class Team {
     private players: HockeyPlayer[] = [];
     private coach: Coach;
 
@@ -62,12 +64,3 @@ class Team {
         this.players.forEach(player => player.play());
     }
 }
-
-const coach = new Coach('Use one timer shot if our net is empty');
-const team = new Team(coach);
-
-team.addPlayer(new Forward('Barkov', 16));
-team.addPlayer(new Defenseman('Larsson', 8));
-team.addPlayer(new Goalie('Bobrovskiy', 72));
-team.showStrategy();
-team.playGame();
