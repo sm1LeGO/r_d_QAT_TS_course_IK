@@ -1,16 +1,16 @@
-import { Car } from "./models/car";
-import { Truck } from "./models/truck";
-import { Motorcycle } from "./models/motorcycle";
-import { vehicleAction } from "./service/vehicleAction";
+import { Car } from './models/car';
+import { Truck } from './models/truck';
+import { Motorcycle } from './models/motorcycle';
+import { vehicleAction } from './service/vehicle-action';
 
-const car = new Car("TESLA");
-const truck = new Truck("VOLVO");
-const motorcycle = new Motorcycle("YAMAHA");
+const car = new Car('TESLA');
+const truck = new Truck('VOLVO');
+const motorcycle = new Motorcycle('YAMAHA');
 
 const vehicles = [car, truck, motorcycle];
 
 vehicles.forEach(vehicle => {
-  vehicleAction(vehicle);
+    vehicleAction(vehicle);
 });
 
 // Refueling the car and truck
@@ -19,5 +19,5 @@ truck.refuel(50);
 
 // Trying to move again
 vehicles.forEach(vehicle => {
-  console.log(vehicle.move());
+    console.log(vehicle.move());
 });

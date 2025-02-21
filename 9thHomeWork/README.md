@@ -16,7 +16,8 @@ To complete task mentioned under https://lms.robotdreams.cc/course/2479/lesson/4
 Write a code where we describe transport driving on highway 
  - Separate code under 3 folders located in src >>> interface/models/service
  - code can be launched under main.ts file
- - ReadMe adjusted 
+ - ReadMe adjusted
+ - Fixed eslint issues  
 
  HW can be counted as done after we got approval from a reviewers and PR is merged into master.
     - If any threads will be opened during review, they will be resolved in same PR on new commit.
