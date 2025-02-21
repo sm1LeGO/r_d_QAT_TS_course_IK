@@ -13,11 +13,9 @@ vehicles.forEach(vehicle => {
     vehicleAction(vehicle);
 });
 
-// Refueling the car and truck
 motorcycle.refuel(20);
 truck.refuel(50);
 
-// Trying to move again
 vehicles.forEach(vehicle => {
     console.log(vehicle.move());
 });
