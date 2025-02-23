@@ -4,7 +4,13 @@ import { IFuelable, IChargeable } from '../interfaces/index';
 export class HybridCar extends Vehicle implements IFuelable, IChargeable {
     private fuel = 40;
     private battery = 50;
+    public constructor(name: string) {
+        super(name, 'Hybrid Car');
+    }
 
+    public getAcceleration(): number {
+        return 15;
+    }
     public move(): string {
         if (this.fuel > 0) {
             this.fuel -= 5;
@@ -14,11 +20,6 @@ export class HybridCar extends Vehicle implements IFuelable, IChargeable {
             return `Hybrid Car ${this.name} switches to electric at ${this.speed} km/h. Battery left: ${this.battery}%.`;
         }
         return `Hybrid Car ${this.name} cannot move, out of fuel and battery!`;
-    }
-
-    public accelerate(): void {
-        this.speed += 15;
-        console.log(`Hybrid Car ${this.name} accelerates to ${this.speed} km/h.`);
     }
 
     public refuel(amount: number): void {

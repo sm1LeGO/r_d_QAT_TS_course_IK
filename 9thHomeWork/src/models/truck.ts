@@ -3,6 +3,13 @@ import { IFuelable } from '../interfaces/index';
 
 export class Truck extends Vehicle implements IFuelable {
     private fuel = 100;
+    public constructor(name: string) {
+        super(name, 'Truck');
+    }
+
+    public getAcceleration(): number {
+        return 5;
+    }
 
     public move(): string {
         if (this.fuel <= 0) {
@@ -10,12 +17,6 @@ export class Truck extends Vehicle implements IFuelable {
         }
         this.fuel -= 5;
         return `Truck ${this.name} transports goods. Speed: ${this.speed} km/h. Fuel left: ${this.fuel}L.`;
-    }
-
-    public accelerate(): void {
-        this.speed -= 5;
-        if (this.speed < 0) this.speed = 0;
-        console.log(`Truck ${this.name} slows down to ${this.speed} km/h.`);
     }
 
     public refuel(amount: number): void {

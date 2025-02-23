@@ -3,6 +3,12 @@ import { IChargeable } from '../interfaces/index';
 
 export class ElectricCar extends Vehicle implements IChargeable {
     private battery = 80;
+    public constructor(name: string) {
+        super(name, 'Electric Car');
+    }
+    public getAcceleration(): number {
+        return 30;
+    }
 
     public move(): string {
         if (this.battery <= 0) {
@@ -10,11 +16,6 @@ export class ElectricCar extends Vehicle implements IChargeable {
         }
         this.battery -= 10;
         return `Electric Car ${this.name} moves silently at ${this.speed} km/h. Battery left: ${this.battery}%.`;
-    }
-
-    public accelerate(): void {
-        this.speed += 30;
-        console.log(`Electric Car ${this.name} accelerates to ${this.speed} km/h.`);
     }
 
     public charge(amount: number): void {
