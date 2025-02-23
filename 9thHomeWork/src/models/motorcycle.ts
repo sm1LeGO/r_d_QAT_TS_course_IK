@@ -1,15 +1,15 @@
 import { Vehicle } from './vehicle';
-import { IFuelable } from '../interface/index';
+import { IFuelable } from '../interfaces/index';
 
 export class Motorcycle extends Vehicle implements IFuelable {
-    private fuel = 20;
+    private fuel = 10;
 
     public move(): string {
         if (this.fuel <= 0) {
             return `Motorcycle ${this.name} cannot move, out of fuel!`;
         }
-        this.fuel -= 5;
-        return `Motorcycle ${this.name} moves at ${this.speed} km/h. Fuel left: ${this.fuel}L.`;
+        this.fuel -= 2;
+        return `Motorcycle ${this.name} speeds on the highway at ${this.speed} km/h. Fuel left: ${this.fuel}L.`;
     }
 
     public accelerate(): void {

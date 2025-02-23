@@ -22,3 +22,10 @@ Write a code where we describe transport driving on highway
  HW can be counted as done after we got approval from a reviewers and PR is merged into master.
     - If any threads will be opened during review, they will be resolved in same PR on new commit.
 
+After comments where added to initial PR done:
+
+ - Adjust interfaces (created IFuelable & IChargeable)
+ - Reworked car class (replaced with electrical and hybrid cars)
+ - Reworked vehicle.ts it just exports abstarct class
+ - according to changes edited main.ts file
+ - Updated ReadMe 
