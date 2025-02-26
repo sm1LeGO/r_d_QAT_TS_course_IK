@@ -1,4 +1,3 @@
-/// <reference types="mocha" />
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { ElectricCar } from '../../src/models/electric-car';
