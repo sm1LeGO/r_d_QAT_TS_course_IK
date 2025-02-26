@@ -29,3 +29,11 @@ After comments where added to initial PR done:
  - Reworked vehicle.ts it just exports abstarct class
  - according to changes edited main.ts file
  - Updated ReadMe 
+
+ # Part related to 10th HomeWork
+
+ - Added tests folder with different frameworks as mocha/jest/vitest under 9thHomeWork folder
+ - Viacheslav helped me with test setup, to run it correctly
+ - now to tun each test you can use command - npx mocha/jest/vitest
+ - Viacheslav branch name > lesson10-fixes
+ - if additional tests will be requested look forward to add them. 
