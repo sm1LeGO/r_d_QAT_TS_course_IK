@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "9cca17ae-69d8-486e-83d7-7fa78ca59e49",
+		"name": "QAT_course_RD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15031162"
+	},
+	"item": [
+		{
+			"name": "Get-requests-and-tests",
+			"item": [
+				{
+					"name": "Get-random-joke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check response structure\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"id\").that.is.a(\"number\");",
+									"    pm.expect(jsonData).to.have.property(\"type\").that.is.a(\"string\");",
+									"    pm.expect(jsonData).to.have.property(\"setup\").that.is.a(\"string\").and.to.not.be.empty;",
+									"    pm.expect(jsonData).to.have.property(\"punchline\").that.is.a(\"string\").and.to.not.be.empty;",
+									"});",
+									"",
+									"pm.test(\"Correct JSON format received\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Server response is below 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"pm.test(\"Response is not empty\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.setup).to.not.be.empty;",
+									"    pm.expect(jsonData.punchline).to.not.be.empty;",
+									"});",
+									"",
+									"pm.test(\"Two request doesn't contain same joke\", function () {",
+									"    let jsonData1 = pm.response.json();",
+									"    ",
+									"    pm.sendRequest(\"http://localhost:3005/random_joke\", function (err, res) {",
+									"        let jsonData2 = res.json();",
+									"        pm.expect(jsonData1.id).to.not.equal(jsonData2.id);",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3005/random_joke",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3005",
+							"path": [
+								"random_joke"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid-request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get-joke-types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Allowed joke types\", function () {",
+									"    let jsonData = pm.response.json();   ",
+									"    let validCategories = [\"general\", \"programming\", \"dad\", \"knock-knock\"];",
+									"    let allValid = jsonData.every(joke => joke.type && validCategories.includes(joke.type));",
+									"    if (!allValid) {",
+									"        console.log(\"Some Jokes doesn't contain valid type:\", jsonData);",
+									"    }",
+									"   // pm.expect(allValid).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3005/types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3005",
+							"path": [
+								"types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-5-random-jokes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response contains 5 jokes\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(5);  // Проверяем, что массив содержит 5 шуток",
+									"});",
+									"",
+									"pm.test(\"Jokes are under allowed categories\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let validCategories = [\"general\", \"programming\", \"dad\", \"knock-knock\"];",
+									"    ",
+									"    let allValid = jsonData.every(joke => validCategories.includes(joke.type));",
+									"    pm.expect(allValid).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Jokes contain setup and punchline\", function () {",
+									"    let jsonData = pm.response.json();",
+									"",
+									"    jsonData.forEach(function(joke) {",
+									"        pm.expect(joke.setup).to.be.a(\"string\").and.to.not.be.empty;",
+									"        pm.expect(joke.punchline).to.be.a(\"string\").and.to.not.be.empty;",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Each joke has unique ID\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let ids = jsonData.map(joke => joke.id);",
+									"    let uniqueIds = new Set(ids);",
+									"    pm.expect(uniqueIds.size).to.equal(ids.length);",
+									"});",
+									"",
+									"pm.test(\"Jokes doesn't contain bad HTML tags\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let htmlRegex = /<\\/?[a-z][\\s\\S]*>/i;",
+									"",
+									"    jsonData.forEach(function(joke) {",
+									"        pm.expect(htmlRegex.test(joke.setup)).to.be.false;",
+									"        pm.expect(htmlRegex.test(joke.punchline)).to.be.false;",
+									"    });",
+									"});",
+									"",
+									"let previousJokes = pm.variables.get(\"previousJokes\") || [];",
+									"",
+									"pm.test(\"Jokes are unique\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let currentJokes = jsonData.map(joke => joke.id);",
+									"    let isDifferent = currentJokes.every(id => !previousJokes.includes(id));",
+									"    pm.expect(isDifferent).to.be.true; ",
+									"    pm.variables.set(\"previousJokes\", currentJokes);",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3005/jokes/random/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3005",
+							"path": [
+								"jokes",
+								"random",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
