@@ -20,3 +20,10 @@ To complete HomeWork done several things >>>>
      - cat-api & pet-store
 
 If any adjustments will be requested they will be added under new commit
+
+# Adjustments part 
+
+- For Cat-Api added integration tests, seems it work properly now
+- For pet-store adjustet pacts, added couple contract test, hopefully understand idea correctly
+- Fix eslint errors
+- added pacts support

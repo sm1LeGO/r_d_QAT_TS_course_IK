@@ -1,55 +1,104 @@
-import { describe, it, expect } from 'vitest';
 import axios from 'axios';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import fs from 'fs';
 import FormData from 'form-data';
 
-const API_KEY = 'live_YjG7EoKk6YDbjSjcNLdJOlMduzERVPRB6LjiLkiJSRD99rjpsXxJInfSurke9QUQ'; // will be removed after merge
+const API_KEY = 'live_YjG7EoKk6YDbjSjcNLdJOlMduzERVPRB6LjiLkiJSRD99rjpsXxJInfSurke9QUQ';
 const BASE_URL = 'https://api.thecatapi.com/v1';
+const HEADERS = { 'x-api-key': API_KEY };
 
-const api = axios.create({
-    baseURL: BASE_URL,
-    headers: { 'x-api-key': API_KEY }
-});
+let imageId: string;
+let favouriteId: string;
+let voteId: string;
 
 describe('TheCatAPI Integration Tests', () => {
-    let imageId: string;
+    beforeAll(async () => {
+        const formData = new FormData();
+        formData.append('file', fs.createReadStream('orlando.jpg'));
 
-    it(
-        'should upload an image and return an image ID',
-        async () => {
-            const form = new FormData();
-            form.append('file', fs.createReadStream('./orlando.jpg'));
-
-            const response = await api.post('/images/upload', form, {
-                headers: { ...form.getHeaders() }
-            });
-
-            expect(response.status).toBe(201);
-            expect(response.data).toHaveProperty('id');
-            imageId = response.data.id;
-        }
-    );
-
-    it('should add the image to favorites', async () => {
-        if (!imageId) throw new Error('imageId is undefined!');
-
-        const response = await api.post<{ id: number }>('/favourites', {
-            image_id: imageId
+        const uploadResponse = await axios.post(`${BASE_URL}/images/upload`, formData, {
+            headers: { ...HEADERS, ...formData.getHeaders() }
         });
 
-        expect(response.status).toBe(200);
-        expect(response.data).toHaveProperty('id');
+        imageId = uploadResponse.data.id;
+        expect(imageId).toBeDefined();
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+    }, 30000);
+
+    it('should fetch image details by ID', async () => {
+        const imageDetailsResponse = await axios.get(`${BASE_URL}/images/${imageId}`, { headers: HEADERS });
+
+        expect(imageDetailsResponse.status).toBe(200);
+        expect(imageDetailsResponse.data.id).toBe(imageId);
+        expect(imageDetailsResponse.data).toHaveProperty('url');
+
+        console.log(`✅ Details for image ID: ${imageId} fetched successfully`);
     });
 
-    it('should vote for an image', async () => {
-        expect(imageId).toBeDefined();
-        if (!imageId) throw new Error('imageId is undefined!');
+    it('should add the image to favorites and verify', async () => {
+        const favouriteResponse = await axios.post(
+            `${BASE_URL}/favourites`,
+            { image_id: imageId },
+            { headers: HEADERS }
+        );
+        favouriteId = favouriteResponse.data.id;
+        expect(favouriteResponse.status).toBe(200);
 
-        const response = await api.post('/votes', {
-            image_id: imageId,
-            value: 1
-        });
+        await new Promise((res) => setTimeout(res, 1000));
 
-        expect([200, 201]).toContain(response.status);
+        const favouritesList = await axios.get(`${BASE_URL}/favourites`, { headers: HEADERS });
+        const favourite = favouritesList.data.find((fav: any) => fav.id === favouriteId);
+        expect(favourite).toBeDefined();
+    });
+
+    it('should fetch all favourite images and verify', async () => {
+        const favouritesResponse = await axios.get(`${BASE_URL}/favourites`, { headers: HEADERS });
+
+        expect(Array.isArray(favouritesResponse.data)).toBe(true);
+        expect(favouritesResponse.data.length).toBeGreaterThan(0);
+
+        console.log('✅ Favourites fetched successfully');
+    });
+
+    it('should vote for an image and verify vote exists', async () => {
+        const voteResponse = await axios.post(
+            `${BASE_URL}/votes`,
+            { image_id: imageId, value: 1 },
+            { headers: HEADERS }
+        );
+        voteId = voteResponse.data.id;
+        expect([200, 201]).toContain(voteResponse.status);
+
+        await new Promise((res) => setTimeout(res, 1000));
+
+        const voteInfo = await axios.get(`${BASE_URL}/votes/${voteId}`, { headers: HEADERS });
+        expect(voteInfo.data.image_id).toBe(imageId);
+
+        console.log('✅ Vote created successfully');
+    });
+
+    it('should update vote for an image', async () => {
+        const updateVoteResponse = await axios.post(
+            `${BASE_URL}/votes`,
+            { image_id: imageId, value: 0 },
+            { headers: HEADERS }
+        );
+
+        expect([200, 201]).toContain(updateVoteResponse.status);
+
+        const voteInfo = await axios.get(`${BASE_URL}/votes/${updateVoteResponse.data.id}`, { headers: HEADERS });
+        expect(voteInfo.data.value).toBe(0);
+
+        console.log(`✅ Vote for image ID: ${imageId} updated successfully`);
+    });
+
+    afterAll(async () => {
+        if (favouriteId) {
+            await axios.delete(`${BASE_URL}/favourites/${favouriteId}`, { headers: HEADERS });
+        }
+        if (voteId) {
+            await axios.delete(`${BASE_URL}/votes/${voteId}`, { headers: HEADERS });
+        }
     });
 });

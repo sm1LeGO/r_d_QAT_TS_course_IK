@@ -1,57 +1,105 @@
-import { describe, it, expect } from 'vitest';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import { AxiosError } from 'axios';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { Pact } from '@pact-foundation/pact';
+import path from 'path';
+
+const pact = new Pact({
+    consumer: 'PetstoreConsumer',
+    provider: 'PetstoreAPI',
+    port: 12345,
+    log: path.resolve(__dirname, 'logs', 'pact.log'),
+    dir: path.resolve(__dirname, 'pacts')
+});
 
 const BASE_URL = 'https://petstore.swagger.io/v2';
-
-interface Pet {
-    id: number;
-    name: string;
-    status: string;
-}
+let petId: number;
 
 describe('Petstore API Contract Tests', () => {
-    const petId = 1017;
+    beforeAll(async () => {
+        await pact.setup();
 
-    it('should create a new pet', async () => {
-        const petData: Pet = { id: petId, name: 'Doggo', status: 'available' };
-        const response = await axios.post<Pet>(`${BASE_URL}/pet`, petData);
-
-        expect(response.status).toBe(200);
-        expect(response.data).toMatchObject(petData);
+        const createPetResponse = await axios.post(`${BASE_URL}/pet`, {
+            id: 12345,
+            name: 'Doggo',
+            status: 'available'
+        });
+        petId = createPetResponse.data.id;
+        expect(createPetResponse.status).toBe(200);
     });
 
-    it('should fetch a pet by ID', async () => {
-        const maxRetries = 5;
-        let pet;
+    it('should fetch a pet by ID with correct schema', async () => {
+        const response = await axios.get(`${BASE_URL}/pet/${petId}`);
+        expect(response.status).toBe(200);
 
-        for (let i = 0; i < maxRetries; i++) {
+        expect(response.data).toMatchObject({
+            id: expect.any(Number),
+            name: expect.any(String),
+            status: expect.stringMatching(/available|pending|sold/)
+        });
+    });
+
+    it('should return 404 for non-existing pet', async () => {
+        try {
+            await axios.get(`${BASE_URL}/pet/999999`);
+        } catch (error: any) {
+            expect(error.response.status).toBe(404);
+        }
+    });
+
+    it('should return a pet when requested by ID using Pact interaction', async () => {
+        await pact.addInteraction({
+            state: 'Pet with ID 1 exists',
+            uponReceiving: 'a request for pet with ID 1',
+            withRequest: {
+                method: 'GET',
+                path: '/pet/1'
+            },
+            willRespondWith: {
+                status: 200,
+                body: {
+                    id: 1,
+                    name: 'Doggo',
+                    status: 'available'
+                }
+            }
+        });
+
+        const response = await axios.get('http://localhost:12345/pet/1');
+        expect(response.status).toBe(200);
+        expect(response.data).toMatchObject({
+            id: 1,
+            name: 'Doggo',
+            status: 'available'
+        });
+
+        await pact.verify();
+    });
+
+    afterAll(async () => {
+        if (petId) {
             try {
                 const response = await axios.get(`${BASE_URL}/pet/${petId}`);
                 if (response.status === 200) {
-                    pet = response.data;
-                    break;
+                    const deleteResponse = await axios.delete(`${BASE_URL}/pet/${petId}`);
+                    expect(deleteResponse.status).toBe(200);
+                    console.log(`✅ Pet with ID ${petId} deleted successfully`);
                 }
-            } catch {
-                await new Promise((res) => setTimeout(res, 500));
+            } catch (error: unknown) {
+                if (error instanceof AxiosError) {
+                    if (error.response && error.response.status === 404) {
+                        console.log(`🐾 Pet with ID ${petId} not found. Skipping delete.`);
+                    } else {
+                        console.error('Error while deleting pet:', error.message);
+                        throw error;
+                    }
+                } else {
+                    console.error('Unknown error while deleting pet:', error);
+                    throw error;
+                }
             }
         }
 
-        expect(pet).toBeDefined();
-        expect(pet.id).toBe(petId);
-    });
-
-
-    it('should delete a pet', async () => {
-        try {
-            await axios.get(`${BASE_URL}/pet/${petId}`);
-            const response = await axios.delete(`${BASE_URL}/pet/${petId}`);
-            expect(response.status).toBe(200);
-        } catch (error: unknown) {
-            if (error instanceof AxiosError && error.response?.status === 404) {
-                console.warn(`Pet with ID ${petId} already removed.`);
-            } else {
-                throw error;
-            }
-        }
+        await pact.finalize();
     });
 });
