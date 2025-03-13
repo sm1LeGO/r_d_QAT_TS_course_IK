@@ -16,17 +16,16 @@ describe('TheCatAPI Integration Tests', () => {
         const formData = new FormData();
         formData.append('file', fs.createReadStream('orlando.jpg'));
 
+        // Загрузка картинки
         const uploadResponse = await axios.post(`${BASE_URL}/images/upload`, formData, {
             headers: { ...HEADERS, ...formData.getHeaders() }
         });
 
         imageId = uploadResponse.data.id;
         expect(imageId).toBeDefined();
-
-        await new Promise((resolve) => setTimeout(resolve, 2000));
     }, 30000);
 
-    it('should fetch image details by ID', async () => {
+    it('should fetch image details by ID and verify correct ID', async () => {
         const imageDetailsResponse = await axios.get(`${BASE_URL}/images/${imageId}`, { headers: HEADERS });
 
         expect(imageDetailsResponse.status).toBe(200);
@@ -36,7 +35,7 @@ describe('TheCatAPI Integration Tests', () => {
         console.log(`✅ Details for image ID: ${imageId} fetched successfully`);
     });
 
-    it('should add the image to favorites and verify', async () => {
+    it('should add the image to favorites and verify correct image_id', async () => {
         const favouriteResponse = await axios.post(
             `${BASE_URL}/favourites`,
             { image_id: imageId },
@@ -45,23 +44,28 @@ describe('TheCatAPI Integration Tests', () => {
         favouriteId = favouriteResponse.data.id;
         expect(favouriteResponse.status).toBe(200);
 
-        await new Promise((res) => setTimeout(res, 1000));
-
         const favouritesList = await axios.get(`${BASE_URL}/favourites`, { headers: HEADERS });
-        const favourite = favouritesList.data.find((fav: any) => fav.id === favouriteId);
+
+        const favourite = favouritesList.data.find((fav: any) => fav.image_id === imageId);
+
         expect(favourite).toBeDefined();
+        expect(favourite.image_id).toBe(imageId);
     });
 
-    it('should fetch all favourite images and verify', async () => {
+    it('should fetch all favourite images and verify the correct image_id', async () => {
         const favouritesResponse = await axios.get(`${BASE_URL}/favourites`, { headers: HEADERS });
 
         expect(Array.isArray(favouritesResponse.data)).toBe(true);
         expect(favouritesResponse.data.length).toBeGreaterThan(0);
 
+        const favourite = favouritesResponse.data.find((fav: any) => fav.image_id === imageId);
+        expect(favourite).toBeDefined();
+        expect(favourite.image_id).toBe(imageId);
+
         console.log('✅ Favourites fetched successfully');
     });
 
-    it('should vote for an image and verify vote exists', async () => {
+    it('should vote for an image and verify correct image_id in vote', async () => {
         const voteResponse = await axios.post(
             `${BASE_URL}/votes`,
             { image_id: imageId, value: 1 },
@@ -70,15 +74,14 @@ describe('TheCatAPI Integration Tests', () => {
         voteId = voteResponse.data.id;
         expect([200, 201]).toContain(voteResponse.status);
 
-        await new Promise((res) => setTimeout(res, 1000));
-
         const voteInfo = await axios.get(`${BASE_URL}/votes/${voteId}`, { headers: HEADERS });
         expect(voteInfo.data.image_id).toBe(imageId);
+        expect(voteInfo.data.value).toBe(1);
 
         console.log('✅ Vote created successfully');
     });
 
-    it('should update vote for an image', async () => {
+    it('should update vote for an image and verify correct image_id', async () => {
         const updateVoteResponse = await axios.post(
             `${BASE_URL}/votes`,
             { image_id: imageId, value: 0 },
