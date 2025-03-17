@@ -1,85 +1,60 @@
 # NHL.com Test Cases for 15th HomeWork
 
-## Test Case 1: Verify Search and Team Display
-
-Title: Search for "Los Angeles Kings" and verify team page
-Preconditions: User is on the NHL homepage
-Steps:
-1. Click on the search bar  
-   - CSS: `input[type="search"]`  
-   - XPath: `//input[@type="search"]`  
-2. Enter "Kings" and press Enter
-3. Click on the search result for "Los Angeles Kings"  
-   - CSS: `.search-results a[href*="la-kings"]`  
-   - XPath: `//div[contains(@class, "search-results")]//a[contains(@href, "la-kings")]`
-4. Verify the team page title  
-   - CSS: `.team-name`  
-   - XPath: `//h1[contains(@class, "team-name")]`  
-Expected Result: The page should display "Los Angeles Kings" as the team name.
+## 1. Verify the presence of "Florida Panthers" in the Atlantic list and navigate to its page
+Precondition: The NHL.com homepage is open  
+Steps:  
+1. Click on the "Teams" button. (`css: button[aria-label='Teams']`)
+2. Verify that the page contains the heading "Atlantic". (`css: h4`, `xpath: //h4[contains(text(), 'Atlantic')]`)
+3. Ensure that the team list contains more than 5 elements. (`css: .nhl-c-team-list__team-menu`, `xpath: //ul[contains(@class, 'nhl-c-team-list__team-menu')]/li`)
+4. Find and click on "Florida Panthers". (`css: a[href*='panthers']`, `xpath: //a[contains(text(), 'Florida Panthers')]`)
+5. Verify that the URL changes and contains "panthers".  
+Expected Result: The "Florida Panthers" team page opens.
 
 ---
-
-## Test Case 2: Verify Team List with Filters
-
-Title: Filter teams by conference
-Preconditions: User is on the NHL Teams page
+## 2. Verify that Spotify is available in the proposed podcast platforms
+Precondition: The NHL.com homepage is open  
 Steps:
-1. Navigate to the "Teams" section  
-   - CSS: `a[href*="teams"]`  
-   - XPath: `//a[contains(@href, "teams")]`
-2. Locate the conference filter  
-   - CSS: `input[type="checkbox"][name="conference"][value="Eastern"]`  
-   - XPath: `//input[@type="checkbox" and @name="conference" and @value="Eastern"]`
-3. Select "Eastern Conference" filter
-4. Verify that all displayed teams belong to the Eastern Conference  
-   - CSS: `.team-item`  
-   - XPath: `//div[contains(@class, "team-item")]`
-Expected Result: Only teams from the Eastern Conference should be displayed.
+1. Click on "Video". (`css: button[aria-label='Video']`)
+2. Click "More". (`css: button[aria-label='More']`)
+3. Navigate to "Podcasts". (`css: ul[data-overflow-nav] a[href*='podcasts']`, `xpath: //ul[@data-overflow-nav]//a[contains(text(), 'Podcasts')]`)
+4. Wait for 3 seconds (to allow content to load).  
+5. Verify that the "Spotify" option is present in the podcast sources section. (`css: div.nhl-c-podcast__sources a[href*='spotify']`, `xpath: //div[contains(@class, 'nhl-c-podcast__sources')]//a[contains(text(), 'Spotify')]`)
+Expected Result:"Spotify" is listed as an available podcast source.
 
 ---
-
-## Test Case 3: Verify News List and Article Opening
-
-Title: Check news list and open an article
-Preconditions: User is on the NHL homepage
-Steps:
-1. Scroll down to the news section  
-   - CSS: `.news-list`  
-   - XPath: `//section[contains(@class, "news-list")]`
-2. Verify that at least 3 news articles are displayed  
-   - CSS: `.news-item`  
-   - XPath: `//div[contains(@class, "news-item")]`
-3. Click on the first article  
-   - CSS: `.news-item:first-of-type a`  
-   - XPath: `(//div[contains(@class, "news-item")])[1]//a`
-4. Verify that the article page loads with a visible title  
-   - CSS: `.article-title`  
-   - XPath: `//h1[contains(@class, "article-title")]`
-Expected Result: The article page should display the news title correctly.
+## 3. Verify that "Philadelphia Flyers" has more than one video and story
+Precondition: The NHL.com homepage is open  
+Steps: 
+1. Click on the search icon. (`css: a.nhl-c-header__btn--search`, `xpath: //a[contains(@class, 'nhl-c-header__btn--search')]`)
+2. Enter "Flyers" in the search input. (`css: input#input-search-query`, `xpath: //input[@id='input-search-query']`)
+3. Press Enter.  
+4. Wait for the search results page to load.  
+5. Verify the presence of the "Video" filter. (`css: .nhl-o-search-facets__item a[href*='type=entityCode&value=video']`, `xpath: //a[contains(@href, 'type=entityCode&value=video')]`)
+6. Verify the presence of the "Story" filter. (`css: .nhl-o-search-facets__item a[href*='type=type&value=story']`, `xpath: //a[contains(@href, 'type=type&value=story')]`)
+7. Ensure that the number of found videos is greater than 1.  
+8. Ensure that the number of found stories is greater than 1.  
+**Expected Result:** More than one video and more than one story about "Philadelphia Flyers" are found.
 
 ---
-
-## Test Case 4: Verify "Load More" Button
-
-Title: Check if the "Load More" button loads additional news
-Preconditions: User is on the NHL News page
+## 4. Verify the ability to complete and submit the "Contact Us" form
+Precondition: The NHL.com homepage is open  
 Steps:
-1. Scroll down to the news list  
-   - CSS: `.news-list`  
-   - XPath: `//section[contains(@class, "news-list")]`
-2. Click on the "Load More" button  
-   - CSS: `.load-more-button`  
-   - XPath: `//button[contains(@class, "load-more-button")]`
-3. Verify that new articles are loaded  
-   - CSS: `.news-item:nth-of-type(n+6)`  
-   - XPath: `(//div[contains(@class, "news-item")])[6]`
-Expected Result: Additional news articles should be displayed.
+1. Click on "More". (`css: .nhl-o-menu__link--more`, `xpath: //a[contains(@class, 'nhl-o-menu__link--more')]`)
+2. Find and click "Contact Us". (`css: a[href='/info/contact-us']`, `xpath: //a[@href='/info/contact-us']`)
+3. Wait for the form to load.  
+4. Fill in the fields:
+   - First Name: "Robot" (`css: #field129743091-first`, `xpath: //input[@id='field129743091-first']`)
+   - Last Name: "Dreams" (`css: #field129743091-last`, `xpath: //input[@id='field129743091-last']`)
+   - Email: "test@test.com" (`css: #field129743092`, `xpath: //input[@id='field129743092']`)
+   - Subject: "NHL.com" (`css: #field129743102`, `xpath: //select[@id='field129743102']`)
+   - Message: "ignore this message it's for testing purposes" (`css: #field129743095`, `xpath: //textarea[@id='field129743095']`)
+5. Verify that the entered data matches the input fields.  
+6. Click the submit button. (`css: #fsSubmitButton4937559`, `xpath: //button[@id='fsSubmitButton4937559']`)
+7. Verify that a redirect to the confirmation page occurs.  
+Expected Result: The form is successfully submitted, and the user is redirected to the confirmation page.
 
 ---
-
-## Test Case 5: Verify Login Functionality
-
-Title: Test login with valid credentials
+## 5. Verify Login Functionality
 Preconditions: User is on the NHL login page
 Steps:
 1. Click on the "Sign In" button  
