@@ -1,0 +1,100 @@
+# NHL.com Test Cases for 15th HomeWork
+
+## Test Case 1: Verify Search and Team Display
+
+Title: Search for "Los Angeles Kings" and verify team page
+Preconditions: User is on the NHL homepage
+Steps:
+1. Click on the search bar  
+   - CSS: `input[type="search"]`  
+   - XPath: `//input[@type="search"]`  
+2. Enter "Kings" and press Enter
+3. Click on the search result for "Los Angeles Kings"  
+   - CSS: `.search-results a[href*="la-kings"]`  
+   - XPath: `//div[contains(@class, "search-results")]//a[contains(@href, "la-kings")]`
+4. Verify the team page title  
+   - CSS: `.team-name`  
+   - XPath: `//h1[contains(@class, "team-name")]`  
+Expected Result: The page should display "Los Angeles Kings" as the team name.
+
+---
+
+## Test Case 2: Verify Team List with Filters
+
+Title: Filter teams by conference
+Preconditions: User is on the NHL Teams page
+Steps:
+1. Navigate to the "Teams" section  
+   - CSS: `a[href*="teams"]`  
+   - XPath: `//a[contains(@href, "teams")]`
+2. Locate the conference filter  
+   - CSS: `input[type="checkbox"][name="conference"][value="Eastern"]`  
+   - XPath: `//input[@type="checkbox" and @name="conference" and @value="Eastern"]`
+3. Select "Eastern Conference" filter
+4. Verify that all displayed teams belong to the Eastern Conference  
+   - CSS: `.team-item`  
+   - XPath: `//div[contains(@class, "team-item")]`
+Expected Result: Only teams from the Eastern Conference should be displayed.
+
+---
+
+## Test Case 3: Verify News List and Article Opening
+
+Title: Check news list and open an article
+Preconditions: User is on the NHL homepage
+Steps:
+1. Scroll down to the news section  
+   - CSS: `.news-list`  
+   - XPath: `//section[contains(@class, "news-list")]`
+2. Verify that at least 3 news articles are displayed  
+   - CSS: `.news-item`  
+   - XPath: `//div[contains(@class, "news-item")]`
+3. Click on the first article  
+   - CSS: `.news-item:first-of-type a`  
+   - XPath: `(//div[contains(@class, "news-item")])[1]//a`
+4. Verify that the article page loads with a visible title  
+   - CSS: `.article-title`  
+   - XPath: `//h1[contains(@class, "article-title")]`
+Expected Result: The article page should display the news title correctly.
+
+---
+
+## Test Case 4: Verify "Load More" Button
+
+Title: Check if the "Load More" button loads additional news
+Preconditions: User is on the NHL News page
+Steps:
+1. Scroll down to the news list  
+   - CSS: `.news-list`  
+   - XPath: `//section[contains(@class, "news-list")]`
+2. Click on the "Load More" button  
+   - CSS: `.load-more-button`  
+   - XPath: `//button[contains(@class, "load-more-button")]`
+3. Verify that new articles are loaded  
+   - CSS: `.news-item:nth-of-type(n+6)`  
+   - XPath: `(//div[contains(@class, "news-item")])[6]`
+Expected Result: Additional news articles should be displayed.
+
+---
+
+## Test Case 5: Verify Login Functionality
+
+Title: Test login with valid credentials
+Preconditions: User is on the NHL login page
+Steps:
+1. Click on the "Sign In" button  
+   - CSS: `a[href*="login"]`  
+   - XPath: `//a[contains(@href, "login")]`
+2. Enter a valid email  
+   - CSS: `input[name="email"]`  
+   - XPath: `//input[@name="email"]`
+3. Enter a valid password  
+   - CSS: `input[name="password"]`  
+   - XPath: `//input[@name="password"]`
+4. Click on the "Log In" button  
+   - CSS: `button[type="submit"]`  
+   - XPath: `//button[@type="submit"]`
+5. Verify that the user is redirected to the profile page  
+   - CSS: `.user-profile`  
+   - XPath: `//div[contains(@class, "user-profile")]`
+Expected Result: User should be logged in and see their profile page.
