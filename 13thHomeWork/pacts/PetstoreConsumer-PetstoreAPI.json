@@ -1,0 +1,41 @@
+{
+  "consumer": {
+    "name": "PetstoreConsumer"
+  },
+  "interactions": [
+    {
+      "description": "a request for pet with ID 1",
+      "providerState": "Pet with ID 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/pet/1"
+      },
+      "response": {
+        "body": {
+          "id": 1,
+          "name": "Doggo",
+          "status": "available"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "14.0.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  },
+  "provider": {
+    "name": "PetstoreAPI"
+  }
+}
