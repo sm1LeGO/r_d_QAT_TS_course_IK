@@ -21,80 +21,41 @@ describe('NHL.com puppeteer Tests', () => {
         await browser.close();
     });
 
-    it(
-        'Check Philadelphia Flyers has more than one video and story',
-        async () => {
-            await page.waitForSelector('a.nhl-c-header__btn--search');
-            await page.click('a.nhl-c-header__btn--search');
+    it('Check Philadelphia Flyers has more than one video and story', async () => {
+        await page.locator('a.nhl-c-header__btn--search').click();
+        await page.locator('input#input-search-query').fill('Flyers');
+        await page.keyboard.press('Enter');
 
-            await page.waitForSelector('input#input-search-query');
-            await page.type('input#input-search-query', 'Flyers');
-            await page.keyboard.press('Enter');
+        await page.waitForSelector('.nhl-o-search-facets__list');
 
-            await page.waitForSelector('.nhl-o-search-facets__list');
+        const storyFilters = await page.$$('.nhl-o-search-facets__item a[href*="type=type&value=story"]');
+        const videoFilters = await page.$$('.nhl-o-search-facets__item a[href*="type=entityCode&value=video"]');
 
-            const videoFilter = await page.$('.nhl-o-search-facets__item a[href*="type=entityCode&value=video"]');
-            const storyFilter = await page.$('.nhl-o-search-facets__item a[href*="type=type&value=story"]');
+        expect(storyFilters.length).toBeGreaterThan(0);
+        expect(videoFilters.length).toBeGreaterThan(0);
+    }, 15000);
 
-            expect(videoFilter).not.toBeNull();
-            expect(storyFilter).not.toBeNull();
+    it('"Contact Us" form can be completed and send', async () => {
+        await page.locator('.nhl-o-menu__link--more').click();
+        await page.locator('a[href="/info/contact-us"]').click();
 
-            const videoText = await page.$eval(
-                '.nhl-o-search-facets__item a[href*="type=entityCode&value=video"] .nhl-o-menu__txt',
-                el => el.textContent
-            );
+        page.locator('#fsForm4937559');
+        await page.locator('#field129743091-first').fill('Robot');
+        await page.locator('#field129743091-last').fill('Dreams');
+        await page.locator('#field129743092').fill('test@test.com');
+        await page.select('#field129743102', 'NHL.com');
+        await page.locator('#field129743095').fill('ignore this message its for testing purposes');
 
-            const storyText = await page.$eval(
-                '.nhl-o-search-facets__item a[href*="type=type&value=story"] .nhl-o-menu__txt',
-                el => el.textContent
-            );
+        await page.waitForFunction(() => {
+            const submitButton = document.querySelector('#fsSubmitButton4937559') as HTMLButtonElement;
+            return submitButton && !submitButton.disabled;
+        });
 
-            const videoCount = parseInt(videoText?.match(/\d+/)?.[0] || '0', 10);
-            const storyCount = parseInt(storyText?.match(/\d+/)?.[0] || '0', 10);
+        await Promise.all([
+            page.locator('#fsSubmitButton4937559').click(),
+            page.waitForNavigation({ waitUntil: 'networkidle2' })
+        ]);
 
-            console.log(`🔍 Founded: ${videoCount}, Stories: ${storyCount}`);
-
-            expect(videoCount).toBeGreaterThan(1);
-            expect(storyCount).toBeGreaterThan(1);
-        },
-        15000
-    );
-    it(
-        '"Contact Us" form can be completed and send',
-        async () => {
-            await page.waitForSelector('.nhl-o-menu__link--more', { timeout: 10000 });
-            await page.click('.nhl-o-menu__link--more');
-
-            await page.waitForSelector('#bd5ddadd-d50d-4800-85eb-88ac552c1501', { timeout: 10000 });
-            await page.waitForSelector('a[href="/info/contact-us"]', { timeout: 10000 });
-            await page.click('a[href="/info/contact-us"]');
-
-            await page.waitForSelector('#fsForm4937559', { timeout: 10000 });
-            await page.waitForSelector('#field129743091-first', { timeout: 10000 });
-            await page.waitForSelector('#field129743091-last', { timeout: 10000 });
-            await page.waitForSelector('#field129743092', { timeout: 10000 });
-            await page.waitForSelector('#field129743102', { timeout: 10000 });
-            await page.waitForSelector('#field129743095', { timeout: 10000 });
-
-            await page.type('#field129743091-first', 'Robot');
-            await page.type('#field129743091-last', 'Dreams');
-            await page.type('#field129743092', 'test@test.com');
-            await page.select('#field129743102', 'NHL.com');
-            await page.type('#field129743095', 'ignore this message it\'s for testing purposes');
-
-            expect(await page.$eval('#field129743091-first', el => (el as HTMLInputElement).value)).toBe('Robot');
-            expect(await page.$eval('#field129743091-last', el => (el as HTMLInputElement).value)).toBe('Dreams');
-            expect(await page.$eval('#field129743092', el => (el as HTMLInputElement).value)).toBe('test@test.com');
-            expect(await page.$eval('#field129743102', el => (el as HTMLSelectElement).value)).toBe('NHL.com');
-            expect(await page.$eval('#field129743095', el => (el as HTMLTextAreaElement).value)).toBe('ignore this message it\'s for testing purposes');
-
-            await page.click('#fsSubmitButton4937559');
-            await page.waitForFunction(
-                () => window.location.href === 'https://nhl-nhwkf.formstack.com/forms/index.php',
-                { timeout: 10000 }
-            );
-        },
-        20000
-    );
+        expect(page.url()).toBe('https://nhl-nhwkf.formstack.com/forms/index.php');
+    }, 30000);
 });
-

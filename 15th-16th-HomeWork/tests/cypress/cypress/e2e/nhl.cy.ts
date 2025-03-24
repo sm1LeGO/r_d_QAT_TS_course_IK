@@ -23,7 +23,9 @@ describe('NHL.com Tests with Cypress', () => {
         cy.contains('More').click();
         cy.get('ul[data-overflow-nav]')
             .contains('Podcasts').click();
-        cy.wait(3000);
+
+        cy.get('div.nhl-c-podcast__sources.nhl-c-cta-row', { timeout: 10000 })
+            .should('be.visible');
 
         cy.get('div.nhl-c-podcast__sources.nhl-c-cta-row').each(($sourceBlock) => {
             cy.wrap($sourceBlock)
