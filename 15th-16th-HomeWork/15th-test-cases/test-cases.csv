@@ -1,0 +1,79 @@
+# NHL.com Test Cases for 15th HomeWork
+
+## 1. Verify the presence of "Florida Panthers" in the Atlantic list and navigate to its page
+ Precondition: The NHL.com homepage is open  
+ Steps:  
+ 1. Click on the "Teams" button. (`css: button[aria-label='Teams']`)
+ 2. Verify that the page contains the heading "Atlantic". (`css: h4`, `xpath: //h4[contains(text(), 'Atlantic')]`)
+ 3. Ensure that the team list contains more than 5 elements. (`css: .nhl-c-team-list__team-menu`, `xpath: //ul[contains(@class, 'nhl-c-team-list__team-menu')]/li`)
+ 4. Find and click on "Florida Panthers". (`css: a[href*='panthers']`, `xpath: //a[contains(text(), 'Florida Panthers')]`)
+ 5. Verify that the URL changes and contains "panthers".  
+ Expected Result: The "Florida Panthers" team page opens.
+
+---
+
+## 2. Verify that Spotify is available in the proposed podcast platforms
+ Precondition: The NHL.com homepage is open  
+ Steps:
+ 1. Click on "Video". (`css: button[aria-label='Video']`)
+ 2. Click "More". (`css: button[aria-label='More']`)
+ 3. Navigate to "Podcasts". (`css: ul[data-overflow-nav] a[href*='podcasts']`, `xpath: //ul[@data-overflow-nav]//a[contains(text(), 'Podcasts')]`)
+ 4. Wait for 3 seconds (to allow content to load).  
+ 5. Verify that the "Spotify" option is present in the podcast sources section. (`css: div.nhl-c-podcast__sources a[href*='spotify']`, `xpath: //div[contains(@class, 'nhl-c-podcast__sources')]//a[contains(text(), 'Spotify')]`)
+ Expected Result:"Spotify" is listed as an available podcast source.
+
+---
+
+## 3. Verify that "Philadelphia Flyers" has more than one video and story
+ Precondition: The NHL.com homepage is open  
+ Steps: 
+ 1. Click on the search icon. (`css: a.nhl-c-header__btn--search`, `xpath: //a[contains(@class, 'nhl-c-header__btn--search')]`)
+ 2. Enter "Flyers" in the search input. (`css: input#input-search-query`, `xpath: //input[@id='input-search-query']`)
+ 3. Press Enter.  
+ 4. Wait for the search results page to load.  
+ 5. Verify the presence of the "Video" filter. (`css: .nhl-o-search-facets__item a[href*='type=entityCode&value=video']`, `xpath: //a[contains(@href, 'type=entityCode&value=video')]`)
+ 6. Verify the presence of the "Story" filter. (`css: .nhl-o-search-facets__item a[href*='type=type&value=story']`, `xpath: //a[contains(@href, 'type=type&value=story')]`)
+ 7. Ensure that the number of found videos is greater than 1.  
+ 8. Ensure that the number of found stories is greater than 1.  
+ Expected Result: More than one video and more than one story about "Philadelphia Flyers" are found.
+
+---
+
+## 4. Verify the ability to complete and submit the "Contact Us" form
+Precondition: The NHL.com homepage is open  
+Steps:
+ 1. Click on "More". (`css: .nhl-o-menu__link--more`, `xpath: //a[contains(@class, 'nhl-o-menu__link--more')]`)
+ 2. Find and click "Contact Us". (`css: a[href='/info/contact-us']`, `xpath: //a[@href='/info/contact-us']`)
+ 3. Wait for the form to load.  
+ 4. Fill in the fields:
+    - First Name: "Robot" (`css: #field129743091-first`, `xpath: //input[@id='field129743091-first']`)
+    - Last Name: "Dreams" (`css: #field129743091-last`, `xpath: //input[@id='field129743091-last']`)
+    - Email: "test@test.com" (`css: #field129743092`, `xpath: //input[@id='field129743092']`)
+    - Subject: "NHL.com" (`css: #field129743102`, `xpath: //select[@id='field129743102']`)
+    - Message: "ignore this message it's for testing purposes" (`css: #field129743095`, `xpath: //textarea[@id='field129743095']`)
+ 5. Verify that the entered data matches the input fields.  
+ 6. Click the submit button. (`css: #fsSubmitButton4937559`, `xpath: //button[@id='fsSubmitButton4937559']`)
+ 7. Verify that a redirect to the confirmation page occurs.  
+ Expected Result: The form is successfully submitted, and the user is redirected to the confirmation page.
+
+---
+
+## Test Case 5: Verify Login Functionality
+Preconditions: User is on the NHL login page
+Steps:
+ 1. Click on the "Sign In" button  
+   - CSS: `a[href*="login"]`  
+   - XPath: `//a[contains(@href, "login")]` 
+ 2. Enter a valid email  
+   - CSS: `input[name="email"]`  
+   - XPath: `//input[@name="email"]`
+ 3. Enter a valid password  
+   - CSS: `input[name="password"]`  
+   - XPath: `//input[@name="password"]`
+ 4. Click on the "Log In" button  
+   - CSS: `button[type="submit"]`  
+   - XPath: `//button[@type="submit"]`
+ 5. Verify that the user is redirected to the profile page  
+   - CSS: `.user-profile`  
+   - XPath: `//div[contains(@class, "user-profile")]`
+Expected Result: User should be logged in and see their profile page.
