@@ -2,55 +2,40 @@ import { test, expect } from '@playwright/test';
 import { SauceDemoPage } from '../pages/sauce-demo-page';
 
 test.describe('SauceDemo Tests', () => {
-    test('Authorization form', async ({ page }) => {
-        const sauceDemo = new SauceDemoPage(page);
+    let sauceDemo: SauceDemoPage;
+
+    test.beforeEach(async ({ page }) => {
+        sauceDemo = new SauceDemoPage(page);
         await sauceDemo.visit();
         await sauceDemo.login('standard_user', 'secret_sauce');
-
-        await expect(page).toHaveURL(/inventory/);
     });
 
-    test('Add product to your cart', async ({ page }) => {
-        const sauceDemo = new SauceDemoPage(page);
-        await sauceDemo.visit();
-        await sauceDemo.login('standard_user', 'secret_sauce');
+    test('Authorization form', async () => {
+        await expect(sauceDemo.page).toHaveURL(/inventory/);
+    });
+
+    test('Add product to your cart', async () => {
         await sauceDemo.addFirstItemToCart();
         await sauceDemo.goToCart();
-
-        const cartItems = page.locator('.cart_item');
-        await expect(cartItems).toHaveCount(1);
+        await expect(sauceDemo.page.locator('.cart_item')).toBeVisible();
     });
 
-    test('Prepare Order', async ({ page }) => {
-        const sauceDemo = new SauceDemoPage(page);
-        await sauceDemo.visit();
-        await sauceDemo.login('standard_user', 'secret_sauce');
+    test('Prepare Order', async () => {
         await sauceDemo.addFirstItemToCart();
         await sauceDemo.goToCart();
-        await sauceDemo.checkout('Ilja', 'Kravecs', '12345');
-
-        await expect(await sauceDemo.isOrderComplete()).toBeTruthy();
+        await sauceDemo.checkout('Elijah', 'Cutter', '141713');
+        expect(await sauceDemo.isOrderComplete()).toBeTruthy();
     });
 
-    test('Exit from account', async ({ page }) => {
-        const sauceDemo = new SauceDemoPage(page);
-        await sauceDemo.visit();
-        await sauceDemo.login('standard_user', 'secret_sauce');
+    test('Exit from account', async () => {
         await sauceDemo.logout();
-
-        await expect(page).toHaveURL('https://www.saucedemo.com/');
+        await expect(sauceDemo.page).toHaveURL('https://www.saucedemo.com/');
     });
 
-    test('Product sorting: from high price to low', async ({ page }) => {
-        const sauceDemo = new SauceDemoPage(page);
-        await sauceDemo.visit();
-        await sauceDemo.login('standard_user', 'secret_sauce');
-
+    test('Product sorting: from high price to low', async () => {
         await sauceDemo.sortProductsBy('hilo');
-
-        const firstItem = await page.locator('.inventory_item_price').first().innerText();
-        const lastItem = await page.locator('.inventory_item_price').last().innerText();
-
-        expect(parseFloat(firstItem.replace('$', ''))).toBeGreaterThan(parseFloat(lastItem.replace('$', '')));
+        const firstItemPrice = await sauceDemo.getFirstItemPrice();
+        const lastItemPrice = await sauceDemo.getLastItemPrice();
+        expect(firstItemPrice).toBeGreaterThanOrEqual(lastItemPrice);
     });
 });

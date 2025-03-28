@@ -1,22 +1,62 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class SauceDemoPage {
-    private page: Page;
-    private usernameInput = '#user-name';
-    private passwordInput = '#password';
-    private loginButton = '#login-button';
-    private inventoryItem = '.inventory_item:first-of-type .btn_inventory';
-    private cartIcon = '.shopping_cart_link';
-    private checkoutButton = '#checkout';
-    private firstNameInput = '#first-name';
-    private lastNameInput = '#last-name';
-    private postalCodeInput = '#postal-code';
-    private continueButton = '#continue';
-    private finishButton = '#finish';
-    private orderCompleteText = '.complete-header';
+    public page: Page;
 
     public constructor(page: Page) {
         this.page = page;
+    }
+
+    private get usernameInput(): Locator {
+        return this.page.locator('#user-name');
+    }
+
+    private get passwordInput(): Locator {
+        return this.page.locator('#password');
+    }
+
+    private get loginButton(): Locator {
+        return this.page.locator('#login-button');
+    }
+
+    private get inventoryItem(): Locator {
+        return this.page.locator('.inventory_item:first-of-type .btn_inventory');
+    }
+
+    private get cartIcon(): Locator {
+        return this.page.locator('.shopping_cart_link');
+    }
+
+    private get checkoutButton(): Locator {
+        return this.page.locator('#checkout');
+    }
+
+    private get firstNameInput(): Locator {
+        return this.page.locator('#first-name');
+    }
+
+    private get lastNameInput(): Locator {
+        return this.page.locator('#last-name');
+    }
+
+    private get postalCodeInput(): Locator {
+        return this.page.locator('#postal-code');
+    }
+
+    private get continueButton(): Locator {
+        return this.page.locator('#continue');
+    }
+
+    private get finishButton(): Locator {
+        return this.page.locator('#finish');
+    }
+
+    private get orderCompleteText(): Locator {
+        return this.page.locator('.complete-header');
+    }
+
+    private get sortDropdown(): Locator {
+        return this.page.locator('.product_sort_container');
     }
 
     public async visit(): Promise<void> {
@@ -24,38 +64,48 @@ export class SauceDemoPage {
     }
 
     public async login(username: string, password: string): Promise<void> {
-        await this.page.fill(this.usernameInput, username);
-        await this.page.fill(this.passwordInput, password);
-        await this.page.click(this.loginButton);
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
     }
 
     public async addFirstItemToCart(): Promise<void> {
-        await this.page.click(this.inventoryItem);
+        await this.inventoryItem.click();
     }
 
     public async goToCart(): Promise<void> {
-        await this.page.click(this.cartIcon);
+        await this.cartIcon.click();
     }
 
     public async checkout(firstName: string, lastName: string, postalCode: string): Promise<void> {
-        await this.page.click(this.checkoutButton);
-        await this.page.fill(this.firstNameInput, firstName);
-        await this.page.fill(this.lastNameInput, lastName);
-        await this.page.fill(this.postalCodeInput, postalCode);
-        await this.page.click(this.continueButton);
-        await this.page.click(this.finishButton);
+        await this.checkoutButton.click();
+        await this.firstNameInput.fill(firstName);
+        await this.lastNameInput.fill(lastName);
+        await this.postalCodeInput.fill(postalCode);
+        await this.continueButton.click();
+        await this.finishButton.click();
     }
 
     public async isOrderComplete(): Promise<boolean> {
-        return await this.page.locator(this.orderCompleteText).isVisible();
+        return await this.orderCompleteText.isVisible();
     }
 
     public async logout(): Promise<void> {
-        await this.page.click('#react-burger-menu-btn');
-        await this.page.click('#logout_sidebar_link');
+        await this.page.locator('#react-burger-menu-btn').click();
+        await this.page.locator('#logout_sidebar_link').click();
     }
 
     public async sortProductsBy(option: string): Promise<void> {
-        await this.page.selectOption('.product_sort_container', option);
+        await this.sortDropdown.selectOption(option);
+    }
+
+    public async getFirstItemPrice(): Promise<number> {
+        const priceText = await this.page.locator('.inventory_item_price').first().innerText();
+        return parseFloat(priceText.replace('$', ''));
+    }
+
+    public async getLastItemPrice(): Promise<number> {
+        const priceText = await this.page.locator('.inventory_item_price').last().innerText();
+        return parseFloat(priceText.replace('$', ''));
     }
 }
