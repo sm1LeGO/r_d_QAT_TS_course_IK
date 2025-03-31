@@ -12,6 +12,7 @@ test.describe('SauceDemo Tests', () => {
 
     test('Authorization form', async () => {
         await expect(sauceDemo.page).toHaveURL(/inventory/);
+        await expect(sauceDemo.getInventoryTitle).toBeVisible();
     });
 
     test('Add product to your cart', async () => {
@@ -30,6 +31,7 @@ test.describe('SauceDemo Tests', () => {
     test('Exit from account', async () => {
         await sauceDemo.logout();
         await expect(sauceDemo.page).toHaveURL('https://www.saucedemo.com/');
+        await expect(sauceDemo.getLoginButton).toBeVisible();
     });
 
     test('Product sorting: from high price to low', async () => {

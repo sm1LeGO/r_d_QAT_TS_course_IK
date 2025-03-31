@@ -1,27 +1,39 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class WikipediaPage {
-    private page: Page;
-    private searchInput = 'input[name=\'search\']';
-    private searchButton = 'button.pure-button';
-    private languageDropdown = '#js-lang-list-button';
-    private ukrainianLangOption = 'a[lang=\'uk\']';
+    public page: Page;
 
     public constructor(page: Page) {
         this.page = page;
+    }
+
+    private get searchInput(): Locator {
+        return this.page.locator('input[name="search"]');
+    }
+
+    private get searchButton(): Locator {
+        return this.page.locator('button.pure-button');
+    }
+
+    private get languageDropdown(): Locator {
+        return this.page.locator('#js-lang-list-button');
+    }
+
+    private get ukrainianLangOption(): Locator {
+        return this.page.locator('a[lang="uk"]');
     }
 
     public async visit(): Promise<void> {
         await this.page.goto('https://www.wikipedia.org/');
     }
 
-    public async search(query: string): Promise<void> {
-        await this.page.fill(this.searchInput, query);
-        await this.page.click(this.searchButton);
+    public async search(term: string): Promise<void> {
+        await this.searchInput.fill(term);
+        await this.searchButton.click();
     }
 
-    public async switchToUkrainian(): Promise<void> {
-        await this.page.click(this.languageDropdown);
-        await this.page.click(this.ukrainianLangOption);
+    public async changeLanguageToUkrainian(): Promise<void> {
+        await this.languageDropdown.click();
+        await this.ukrainianLangOption.click();
     }
 }

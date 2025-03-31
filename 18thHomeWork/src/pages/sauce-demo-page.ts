@@ -59,6 +59,14 @@ export class SauceDemoPage {
         return this.page.locator('.product_sort_container');
     }
 
+    public get getInventoryTitle(): Locator {
+        return this.page.locator('.title');
+    }
+
+    public get getLoginButton(): Locator {
+        return this.page.locator('#login-button');
+    }
+
     public async visit(): Promise<void> {
         await this.page.goto('https://www.saucedemo.com/');
     }
