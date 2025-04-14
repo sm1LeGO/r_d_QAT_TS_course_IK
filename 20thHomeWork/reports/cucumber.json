@@ -1,0 +1,90 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "google-search-functionality;user-searches-for-a-term-on-google",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "User searches for a term on Google",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "the user is on the Google homepage",
+            "match": {
+              "location": "file:/Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:13"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 72584,
+              "error_message": "TypeError: Cannot read properties of undefined (reading 'goto')\n    at GooglePage.<anonymous> (file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/pages/google-page.ts:17:29)\n    at file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/pages/google-page.ts:7:71\n    at __awaiter (file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/pages/google-page.ts:3:12)\n    at GooglePage.goTo (file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/pages/google-page.ts:16:16)\n    at Object.<anonymous> (file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:16:26)\n    at file:///Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:7:71"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "the user enters a search term \"Cucumber.js\"",
+            "match": {
+              "location": "file:/Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:20"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 6,
+            "name": "the user submits the search",
+            "match": {
+              "location": "file:/Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:27"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "the search results page is displayed",
+            "match": {
+              "location": "file:/Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:34"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "the results contain \"Cucumber.js\"",
+            "match": {
+              "location": "file:/Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/20thHomeWork/src/steps/search.steps.ts:41"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "google-search-functionality",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Google Search functionality",
+    "tags": [],
+    "uri": "features/google.feature"
+  }
+]
