@@ -1,26 +1,33 @@
 import { Page, Locator } from '@playwright/test';
+import { ProductCard } from '../components/product-card.component';
+import { Header } from '../components/header.component';
 
 export class InventoryPage {
-    public constructor(private readonly page: Page) {}
+    public header: Header;
+    public productCards: ProductCard[] = [];
 
-    public get firstItemTitle(): Locator {
-        return this.page.locator('.inventory_item_name').first();
+    public constructor(public readonly page: Page) {
+        this.header = new Header(page);
     }
 
-    public get addToCartButtons(): Locator {
-        return this.page.locator('button[data-test^="add-to-cart"]');
+    public async init(): Promise<void> {
+        await this.page.waitForSelector('.inventory_item');
+
+        const items = this.page.locator('.inventory_item');
+        const count = await items.count();
+
+        this.productCards = [];
+        for (let i = 0; i < count; i++) {
+            const cardLocator = items.nth(i);
+            this.productCards.push(new ProductCard(cardLocator));
+        }
+    }
+
+    public async addItemToCart(index: number): Promise<void> {
+        await this.productCards[index].addToCart();
     }
 
     public get cartBadge(): Locator {
         return this.page.locator('.shopping_cart_badge');
-    }
-
-    public async getItemCount(): Promise<number> {
-        return await this.addToCartButtons.count();
-    }
-
-    public async addItemToCart(index = 0): Promise<void> {
-        const button = this.addToCartButtons.nth(index);
-        await button.click();
     }
 }

@@ -15,9 +15,11 @@ export const test = base.extend<Fixtures>({
     },
 
     inventoryPage: async ({ page }, use) => {
-        const inventoryPage = new InventoryPage(page);
-        await use(inventoryPage);
+        const pageObject = new InventoryPage(page);
+        await pageObject.init();
+        await use(pageObject);
     }
+
 });
 
 export { expect } from '@playwright/test';
