@@ -1,9 +1,14 @@
-# HomeWork 20 - Cucumber.js
+## Part related to 20th HomeWork
 
-## This HW covers the following topics:
+Fully reworked my previous code after reading HowTo for Cucumber tests
 
-Work with  BDD
-Cucumber.js Scenario Context
-Cucumber.js + Playwright test
+for test run command please use >>>
 
-Unfortunately after cucumber configuration still doesn't able to run it properly, can't find solution how to fix it. at least will provide basic solution, hopefully in future will be find an possibility to setup it properly. 
+-- npm run test
+-- npm run report
+
+in addition for testing purposes added report system after tests running 
+
+in my code used Cucumber + TypeScript + Gherkin + Playwright part 
+
+please use this latest commit to evaluate my homework 
