@@ -4,10 +4,12 @@
   "description": "ts simple project",
   "main": "index.js",
   "scripts": {
-    "test": "test",
+    "test": "playwright test",
     "lint": "eslint src/",
     "lint:fix": "npm run lint -- --fix",
-    "build": "npm run lint && tsc --build"
+    "build": "npm run lint && tsc --build",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +20,8 @@
     "@stylistic/eslint-plugin-ts": "^3.1.0",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
+    "allure-commandline": "^2.33.0",
+    "allure-playwright": "^3.2.1",
     "eslint": "^9.23.0",
     "eslint-plugin-prettier": "^5.2.5",
     "eslint-plugin-unicorn": "^58.0.0",

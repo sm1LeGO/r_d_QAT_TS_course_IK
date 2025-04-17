@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1973","Search info","","Tue Apr 15 12:45:48 EEST 2025","passed","Tue Apr 15 12:45:50 EEST 2025","Wikipedia Tests","wikipedia.spec.ts","",""
+"","1357","Add product to your cart","","Tue Apr 15 12:45:50 EEST 2025","passed","Tue Apr 15 12:45:52 EEST 2025","SauceDemo Tests","saucedemo.spec.ts","",""
+"","1443","Product sorting: from high price to low","","Tue Apr 15 12:45:56 EEST 2025","passed","Tue Apr 15 12:45:57 EEST 2025","SauceDemo Tests","saucedemo.spec.ts","",""
+"","2298","Exit from account","","Tue Apr 15 12:45:53 EEST 2025","passed","Tue Apr 15 12:45:56 EEST 2025","SauceDemo Tests","saucedemo.spec.ts","",""
+"","1531","Prepare Order","","Tue Apr 15 12:45:52 EEST 2025","passed","Tue Apr 15 12:45:53 EEST 2025","SauceDemo Tests","saucedemo.spec.ts","",""
+"","1645","Language change to Ukrainian","","Tue Apr 15 12:45:51 EEST 2025","passed","Tue Apr 15 12:45:52 EEST 2025","Wikipedia Tests","wikipedia.spec.ts","",""
+"","1917","Authorization form","","Tue Apr 15 12:45:48 EEST 2025","passed","Tue Apr 15 12:45:50 EEST 2025","SauceDemo Tests","saucedemo.spec.ts","",""

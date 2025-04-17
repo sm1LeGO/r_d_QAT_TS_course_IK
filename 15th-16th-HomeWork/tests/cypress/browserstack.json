@@ -1,0 +1,28 @@
+{
+    "auth": {
+      "username": "iljakravecs1",
+      "access_key": "zQkLLrSxoT9nGiV1MUrx"
+    },
+    "browsers": [
+        {
+          "browser": "chrome",
+          "os": "Windows",
+          "os_version": "11"
+        }
+      ],    
+    "run_settings": {
+      "cypress_proj_dir": ".",
+      "cypress_config_file": "cypress.config.ts",
+      "project_name": "NHL.com Cypress Tests",
+      "build_name": "Build 1 - Cypress + Observability",
+      "exclude": [],
+      "parallels": 5,
+      "npm_dependencies": {}
+    },
+    "connection_settings": {
+      "local": true,
+      "local_identifier": null
+    },
+    "disable_usage_reporting": false
+  }
+  
