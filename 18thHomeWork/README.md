@@ -16,3 +16,9 @@ For Homework complete done:
   - tests successfully runes under command npx playwright test --ui 
   - fixed eslint issues
   - updated ReadMe file
+
+  # How to run allure report >>>
+
+npm run test
+npm run allure:generate
+npm run allure:open
