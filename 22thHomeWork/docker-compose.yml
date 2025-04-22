@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  expense-tracker:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - '3000:3000'
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - expense-tracker
+    environment:
+      - BASE_URL=http://expense-tracker:3000
+    entrypoint: >
+      sh -c "
+        until curl -s http://expense-tracker:3000; do echo waiting for app; sleep 2; done;
+        npx playwright test
+      "
