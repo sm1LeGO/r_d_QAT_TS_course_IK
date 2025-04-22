@@ -1,0 +1,49 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Install Playwright dependencies
+      run: |
+        npx playwright install
+
+    - name: Run tests
+      run: |
+        npx playwright test
+
+    - name: Upload test results as artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: /Users/ikravecs/Desktop/Projects/r_d_QAT_TS_course_IK/19thHomeWork
+
+    - name: Report Playwright results to GitHub Actions UI
+      run: |
+        npx playwright show-report
